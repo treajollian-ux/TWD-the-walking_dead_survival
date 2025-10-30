@@ -3,48 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لعبة البقاء - The Walking Dead</title>
+    <title>The Walking Dead - Survival</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="gameContainer">
-        <canvas id="gameCanvas"></canvas>
-        
-        <!-- شاشة البداية -->
-        <div id="startScreen">
-            <h1>عالم الموتى السائرين 🧟‍♂️</h1>
-            <p>ابق على قيد الحياة وابنِ مجتمعك!</p>
-            <button onclick="startGame()">🚀 ابدأ اللعبة</button>
-        </div>
-
-        <!-- واجهة اللعبة -->
-        <div id="ui" style="display: none;">
-            <!-- شريط الموارد العلوي -->
-            <div id="topBar">
-                <div class="resources">
-                    <div class="resource">💎 <span>45</span></div>
-                    <div class="resource">🪙 <span>297</span></div>
-                    <div class="resource">🥩 <span>3785</span></div>
-                    <div class="resource">🪵 <span>1680</span></div>
-                </div>
-                <div class="top-buttons">
-                    <button class="icon-btn" onclick="openGift()">🎁</button>
-                    <button class="icon-btn" onclick="openShop()">🛒</button>
-                </div>
+    <!-- شاشة التحميل -->
+    <div id="loadingScreen">
+        <div class="loading-content">
+            <h1>THE WALKING DEAD</h1>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
             </div>
+            <p>جار التحميل...</p>
+        </div>
+    </div>
 
-            <!-- شريط الأدوات السفلي -->
-            <div id="bottomBar">
-                <button class="action-btn" onclick="openCastle()">🏰 القلعة</button>
-                <button class="action-btn" onclick="openCharacters()">👥 الشخصيات</button>
-                <button class="action-btn" onclick="openBuildings()">🏠 المباني</button>
-                <button class="action-btn" onclick="openWeapons()">⚔️ الأسلحة</button>
-                <button class="action-btn" onclick="openSettings()">⚙️ الإعدادات</button>
+    <!-- شاشة البداية -->
+    <div id="startScreen">
+        <div class="start-content">
+            <h1>THE WALKING DEAD</h1>
+            <p class="subtitle">SURVIVAL</p>
+            <div class="menu-buttons">
+                <button class="menu-btn" onclick="startGame()">بدء اللعبة</button>
+                <button class="menu-btn" onclick="showSettings()">الإعدادات</button>
+                <button class="menu-btn" onclick="showCredits()">حقوق</button>
             </div>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
+    <!-- واجهة اللعبة الرئيسية -->
+    <div id="gameUI" class="hidden">
+        <!-- شريط الحالة العلوي -->
+        <div id="topBar">
+            <div class="player-info">
+                <div class="avatar">👤</div>
+                <div class="player-stats">
+                    <div class="player-name">الناجي_45</div>
+                    <div class="player-level">المستوى 12</div>
+                </div>
+            </div>
+
+            <div class="resources">
+                <div class="resource-item">
+                    <span class="resource-icon">💎</span>
+                    <span class="resource-value" id="gems">45</span>
+                </div>
+                <div class="resource-item">
+                    <span class="resource-icon">🪙</span>
+                    <span class="resource-value" id="coins">297</span>
+                </div>
+                <div class="resource-item">
+                    <span class="resource-icon">🥩</span>
+                    <span class="resource-value" id="food">3785</span>
+                </div>
+                <div class="resource-item">
+                    <span class="resource-icon">🪵</span>
+                    <span class="resource-value" id="wood">1680</span>
+                </div>
+                <div class="resource-item">
+                    <span class="resource-icon">⚒️</span>
+                    <span class="resource-value" id="tools">218</span>
+                </div>
+            </div>
+
+            <div class="top-actions">
+                <button class="icon-btn" onclick="openDailyGift()">🎁</button>
+                <button class="icon-btn" onclick="openShop()">🛒</button>
+                <button class="icon-btn" onclick="openMissions()">📋</button>
+            </div>
+        </div>
+
+        <!-- شريط الأدوات السفلي -->
+        <div id="bottomBar">
+            <div class="action-buttons">
+                <button class="action-btn active" onclick="openCastleMenu()">
+                    <div class="btn-icon">🏰</div>
+                    <div class="btn-label">القلعة</div>
+                </button>
+                <button class="action-btn" onclick="openCharactersMenu()">
+                    <div class="btn-icon">👥</div>
+                    <div class="btn-label">الشخصيات</div>
+                </button>
+                <button class="action-btn" onclick="openBuildingsMenu()">
+                    <div class="btn-icon">🏠</div>
+                    <div class="btn-label">المباني</div>
+                </button>
+                <button class="action-btn" onclick="openWeaponsMenu()">
+                    <div class="btn-icon">⚔️</div>
+                    <div class="btn-label">الأسلحة</div>
+                </button>
+                <button class="action-btn" onclick="openMapMenu()">
+                    <div class="btn-icon">🗺️</div>
+                    <div class="btn-label">الخريطة</div>
+                </button>
+            </div>
+
+            <div class="utility-buttons">
+                <button class="action-btn" onclick="openInventory()">
+                    <div class="btn-icon">🎒</div>
+                    <div class="btn-label">المخزون</div>
+                </button>
+                <button class="action-btn" onclick="openSettingsMenu()">
+                    <div class="btn-icon">⚙️</div>
+                    <div class="btn-label">الإعدادات</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- أزرار التحكم في القتال -->
+        <div id="combatControls">
+            <button class="combat-btn attack-btn" onclick="attack()">⚔️</button>
+            <button class="combat-btn switch-btn" onclick="switchWeapon()">🔄</button>
+            <div class="weapon-display" id="currentWeapon">بندقية الصيد</div>
+        </div>
+
+        <!-- شريط الصحة -->
+        <div id="healthBar">
+            <div class="health-fill" id="healthFill"></div>
+            <div class="health-text" id="healthText">100%</div>
+        </div>
+    </div>
+
+    <!-- القوائم المنبثقة -->
+    <div id="castleMenu" class="menu-overlay hidden">
+        <div class="menu-content">
+            <div class="menu-header">
+                <h2>🕌 القلعة</h2>
+                <button class="close-btn" onclick="closeMenu('castleMenu')">✕</button>
+            </div>
+            <div class="menu-items">
+                <div class="menu-item" onclick="openBuildingDetails('wall')">
+                    <div class="item-icon">🧱</div>
+                    <div class="item-info">
+                        <div class="item-name">جدار القلعة</div>
+                        <div class="item-stats">المستوى 3 | الطاقة 1500/1500</div>
+                    </div>
+                    <button class="upgrade-btn">ترقية</button>
+                </div>
+                <div class="menu-item" onclick="openBuildingDetails('tower')">
+                    <div class="item-icon">🏹</div>
+                    <div class="item-info">
+                        <div class="item-name">أبراج الرماة</div>
+                        <div class="item-stats">المستوى 2 | الطاقة 800/800</div>
+                    </div>
+                    <button class="upgrade-btn">ترقية</button>
+                </div>
+                <div class="menu-item" onclick="openBuildingDetails('gate')">
+                    <div class="item-icon">🚪</div>
+                    <div class="item-info">
+                        <div class="item-name">البوابة الرئيسية</div>
+                        <div class="item-stats">المستوى 4 | الطاقة 2000/2000</div>
+                    </div>
+                    <button class="upgrade-btn">ترقية</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- قائمة الشخصيات -->
+    <div id="charactersMenu" class="menu-overlay hidden">
+        <div class="menu-content">
+            <div class="menu-header">
+                <h2>👥 الشخصيات</h2>
+                <button class="close-btn" onclick="closeMenu('charactersMenu')">✕</button>
+            </div>
+            <div class="menu-items">
+                <div class="character-item">
+                    <div class="char-icon">👨‍🚀</div>
+                    <div class
