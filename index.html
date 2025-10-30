@@ -7,214 +7,146 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- شاشة التحميل -->
-    <div id="loadingScreen">
-        <div class="loading-content">
-            <h1>THE WALKING DEAD</h1>
-            <div class="loading-bar">
-                <div class="loading-progress"></div>
-            </div>
-            <p>جار التحميل...</p>
-        </div>
-    </div>
-
-    <!-- شاشة البداية -->
-    <div id="startScreen">
-        <div class="start-content">
-            <h1>THE WALKING DEAD</h1>
-            <p class="subtitle">SURVIVAL</p>
-            <div class="menu-buttons">
-                <button class="menu-btn" onclick="startGame()">بدء اللعبة</button>
-                <button class="menu-btn" onclick="showSettings()">الإعدادات</button>
-                <button class="menu-btn" onclick="showCredits()">حقوق</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- واجهة اللعبة الرئيسية -->
-    <div id="gameUI" class="hidden">
-        <!-- شريط الحالة العلوي -->
-        <div id="topBar">
-            <div class="player-info">
-                <div class="avatar">👤</div>
-                <div class="player-stats">
-                    <div class="player-name">الناجي_45</div>
-                    <div class="player-level">المستوى 12</div>
+    <div id="gameContainer">
+        <!-- المشهد ثلاثي الأبعاد -->
+        <canvas id="gameCanvas"></canvas>
+        
+        <!-- واجهة اللعبة -->
+        <div id="ui">
+            <!-- شريط الموارد العلوي -->
+            <div id="topBar">
+                <div class="resources">
+                    <div class="resource">💎 <span id="gems">45</span></div>
+                    <div class="resource">🪙 <span id="coins">297</span></div>
+                    <div class="resource">🥩 <span id="food">3785</span></div>
+                    <div class="resource">🪵 <span id="wood">1680</span></div>
+                    <div class="resource">⚒️ <span id="tools">218</span></div>
+                </div>
+                <div class="topActions">
+                    <button class="topBtn" onclick="showDailyGift()">🎁 هدية</button>
+                    <button class="topBtn" onclick="showShop()">🛒 متجر</button>
+                    <button class="topBtn" onclick="showMissions()">📋 مهام</button>
                 </div>
             </div>
 
-            <div class="resources">
-                <div class="resource-item">
-                    <span class="resource-icon">💎</span>
-                    <span class="resource-value" id="gems">45</span>
-                </div>
-                <div class="resource-item">
-                    <span class="resource-icon">🪙</span>
-                    <span class="resource-value" id="coins">297</span>
-                </div>
-                <div class="resource-item">
-                    <span class="resource-icon">🥩</span>
-                    <span class="resource-value" id="food">3785</span>
-                </div>
-                <div class="resource-item">
-                    <span class="resource-icon">🪵</span>
-                    <span class="resource-value" id="wood">1680</span>
-                </div>
-                <div class="resource-item">
-                    <span class="resource-icon">⚒️</span>
-                    <span class="resource-value" id="tools">218</span>
+            <!-- شريط الأدوات السفلي -->
+            <div id="bottomBar">
+                <div class="actionButtons">
+                    <button class="actionBtn" onclick="showCastle()">🏰 القلعة</button>
+                    <button class="actionBtn" onclick="showCharacters()">👥 الشخصيات</button>
+                    <button class="actionBtn" onclick="showBuildings()">🏠 المباني</button>
+                    <button class="actionBtn" onclick="showWeapons()">⚔️ أسلحة</button>
+                    <button class="actionBtn" onclick="showSettings()">⚙️ إعدادات</button>
                 </div>
             </div>
 
-            <div class="top-actions">
-                <button class="icon-btn" onclick="openDailyGift()">🎁</button>
-                <button class="icon-btn" onclick="openShop()">🛒</button>
-                <button class="icon-btn" onclick="openMissions()">📋</button>
+            <!-- أزرار القتال -->
+            <div id="combatControls">
+                <button class="combatBtn" id="attackBtn" onclick="attack()">⚔️ هجوم</button>
+                <button class="combatBtn" id="switchBtn" onclick="switchWeapon()">🔄 تبديل</button>
+            </div>
+
+            <!-- شريط الصحة -->
+            <div id="healthBar">
+                <div class="healthFill" id="healthFill"></div>
+                <div class="healthText" id="healthText">100%</div>
             </div>
         </div>
 
-        <!-- شريط الأدوات السفلي -->
-        <div id="bottomBar">
-            <div class="action-buttons">
-                <button class="action-btn active" onclick="openCastleMenu()">
-                    <div class="btn-icon">🏰</div>
-                    <div class="btn-label">القلعة</div>
-                </button>
-                <button class="action-btn" onclick="openCharactersMenu()">
-                    <div class="btn-icon">👥</div>
-                    <div class="btn-label">الشخصيات</div>
-                </button>
-                <button class="action-btn" onclick="openBuildingsMenu()">
-                    <div class="btn-icon">🏠</div>
-                    <div class="btn-label">المباني</div>
-                </button>
-                <button class="action-btn" onclick="openWeaponsMenu()">
-                    <div class="btn-icon">⚔️</div>
-                    <div class="btn-label">الأسلحة</div>
-                </button>
-                <button class="action-btn" onclick="openMapMenu()">
-                    <div class="btn-icon">🗺️</div>
-                    <div class="btn-label">الخريطة</div>
-                </button>
+        <!-- القوائم المنبثقة -->
+        <div id="castleMenu" class="menu">
+            <div class="menuHeader">
+                <h2>🏰 قلعة الناجين</h2>
+                <button class="closeBtn" onclick="closeMenu('castleMenu')">✕</button>
             </div>
-
-            <div class="utility-buttons">
-                <button class="action-btn" onclick="openInventory()">
-                    <div class="btn-icon">🎒</div>
-                    <div class="btn-label">المخزون</div>
-                </button>
-                <button class="action-btn" onclick="openSettingsMenu()">
-                    <div class="btn-icon">⚙️</div>
-                    <div class="btn-label">الإعدادات</div>
-                </button>
-            </div>
-        </div>
-
-        <!-- أزرار التحكم في القتال -->
-        <div id="combatControls">
-            <button class="combat-btn attack-btn" onclick="attack()">⚔️</button>
-            <button class="combat-btn switch-btn" onclick="switchWeapon()">🔄</button>
-            <div class="weapon-display" id="currentWeapon">بندقية الصيد</div>
-        </div>
-
-        <!-- شريط الصحة -->
-        <div id="healthBar">
-            <div class="health-fill" id="healthFill"></div>
-            <div class="health-text" id="healthText">100%</div>
-        </div>
-    </div>
-
-    <!-- القوائم المنبثقة -->
-    <div id="castleMenu" class="menu-overlay hidden">
-        <div class="menu-content">
-            <div class="menu-header">
-                <h2>🕌 القلعة</h2>
-                <button class="close-btn" onclick="closeMenu('castleMenu')">✕</button>
-            </div>
-            <div class="menu-items">
-                <div class="menu-item" onclick="openBuildingDetails('wall')">
-                    <div class="item-icon">🧱</div>
-                    <div class="item-info">
-                        <div class="item-name">جدار القلعة</div>
-                        <div class="item-stats">المستوى 3 | الطاقة 1500/1500</div>
+            <div class="menuContent">
+                <div class="menuItem">
+                    <div class="itemIcon">🧱</div>
+                    <div class="itemInfo">
+                        <h3>جدار القلعة</h3>
+                        <p>المستوى: 3 | الطاقة: 1500/1500</p>
                     </div>
-                    <button class="upgrade-btn">ترقية</button>
+                    <button class="upgradeBtn" onclick="upgradeBuilding('wall')">ترقية</button>
                 </div>
-                <div class="menu-item" onclick="openBuildingDetails('tower')">
-                    <div class="item-icon">🏹</div>
-                    <div class="item-info">
-                        <div class="item-name">أبراج الرماة</div>
-                        <div class="item-stats">المستوى 2 | الطاقة 800/800</div>
+                <div class="menuItem">
+                    <div class="itemIcon">🏹</div>
+                    <div class="itemInfo">
+                        <h3>أبراج الرماة</h3>
+                        <p>المستوى: 2 | الطاقة: 800/800</p>
                     </div>
-                    <button class="upgrade-btn">ترقية</button>
+                    <button class="upgradeBtn" onclick="upgradeBuilding('tower')">ترقية</button>
                 </div>
-                <div class="menu-item" onclick="openBuildingDetails('gate')">
-                    <div class="item-icon">🚪</div>
-                    <div class="item-info">
-                        <div class="item-name">البوابة الرئيسية</div>
-                        <div class="item-stats">المستوى 4 | الطاقة 2000/2000</div>
+                <div class="menuItem">
+                    <div class="itemIcon">🚪</div>
+                    <div class="itemInfo">
+                        <h3>البوابة الرئيسية</h3>
+                        <p>المستوى: 4 | الطاقة: 2000/2000</p>
                     </div>
-                    <button class="upgrade-btn">ترقية</button>
+                    <button class="upgradeBtn" onclick="upgradeBuilding('gate')">ترقية</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- قائمة الشخصيات -->
+        <div id="charactersMenu" class="menu">
+            <div class="menuHeader">
+                <h2>👥 فريق الناجين</h2>
+                <button class="closeBtn" onclick="closeMenu('charactersMenu')">✕</button>
+            </div>
+            <div class="menuContent">
+                <div class="menuItem">
+                    <div class="itemIcon">👨‍🚀</div>
+                    <div class="itemInfo">
+                        <h3>ريك</h3>
+                        <p>المستوى: 5 | الصحة: 100/100 | EXP: 250/500</p>
+                    </div>
+                    <button class="actionBtn" onclick="showCharacterDetails('rick')">تفاصيل</button>
+                </div>
+                <div class="menuItem">
+                    <div class="itemIcon">👩‍🌾</div>
+                    <div class="itemInfo">
+                        <h3>كارول</h3>
+                        <p>المستوى: 4 | الصحة: 80/80 | EXP: 180/400</p>
+                    </div>
+                    <button class="actionBtn" onclick="showCharacterDetails('carol')">تفاصيل</button>
+                </div>
+                <div class="menuItem">
+                    <div class="itemIcon">👨‍🔧</div>
+                    <div class="itemInfo">
+                        <h3>ديرل</h3>
+                        <p>المستوى: 3 | الصحة: 90/90 | EXP: 120/300</p>
+                    </div>
+                    <button class="actionBtn" onclick="showCharacterDetails('daryl')">تفاصيل</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- قائمة الإعدادات -->
+        <div id="settingsMenu" class="menu">
+            <div class="menuHeader">
+                <h2>⚙️ الإعدادات</h2>
+                <button class="closeBtn" onclick="closeMenu('settingsMenu')">✕</button>
+            </div>
+            <div class="menuContent">
+                <div class="settingItem">
+                    <label>موسيقى الخلفية</label>
+                    <input type="range" min="0" max="100" value="70" class="volumeSlider">
+                </div>
+                <div class="settingItem">
+                    <label>أصوات المؤثرات</label>
+                    <input type="range" min="0" max="100" value="80" class="volumeSlider">
+                </div>
+                <div class="settingItem">
+                    <label>اللغة</label>
+                    <select class="langSelect">
+                        <option>العربية</option>
+                        <option>English</option>
+                    </select>
+                </div>
+                <button class="saveBtn" onclick="saveSettings()">حفظ الإعدادات</button>
             </div>
         </div>
     </div>
-
-    <!-- قائمة الشخصيات -->
-    <div id="charactersMenu" class="menu-overlay hidden">
-        <div class="menu-content">
-            <div class="menu-header">
-                <h2>👥 الشخصيات</h2>
-                <button class="close-btn" onclick="closeMenu('charactersMenu')">✕</button>
-            </div>
-            <div class="menu-items">
-                <div class="character-item">
-                    <div class="char-icon">👨‍🚀</div>
-                    <div class="char-info">
-                        <div class="char-name">ريك</div>
-                        <div class="char-stats">
-                            <span>المستوى 5</span>
-                            <span>❤️ 100/100</span>
-                            <span>⭐ 250/500 EXP</span>
-                        </div>
-                    </div>
-                    <button class="action-btn">تفاصيل</button>
-                </div>
-                <div class="character-item">
-                    <div class="char-icon">👩‍🌾</div>
-                    <div class="char-info">
-                        <div class="char-name">كارول</div>
-                        <div class="char-stats">
-                            <span>المستوى 4</span>
-                            <span>❤️ 80/80</span>
-                            <span>⭐ 180/400 EXP</span>
-                        </div>
-                    </div>
-                    <button class="action-btn">تفاصيل</button>
-                </div>
-                <div class="character-item">
-                    <div class="char-icon">👨‍🔧</div>
-                    <div class="char-info">
-                        <div class="char-name">ديرل</div>
-                        <div class="char-stats">
-                            <span>المستوى 3</span>
-                            <span>❤️ 90/90</span>
-                            <span>⭐ 120/300 EXP</span>
-                        </div>
-                    </div>
-                    <button class="action-btn">تفاصيل</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- المشهد ثلاثي الأبعاد -->
-    <canvas id="gameCanvas"></canvas>
-
-    <!-- الموسيقى -->
-    <audio id="backgroundMusic" loop>
-        <source src="https://assets.mixkit.co/music/preview/mixkit-horror-spooky-ambience-429.mp3" type="audio/mpeg">
-    </audio>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="script.js"></script>
