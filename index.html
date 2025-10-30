@@ -9,11 +9,41 @@
 <body>
     <div id="gameContainer">
         <canvas id="gameCanvas"></canvas>
+        
+        <!-- شاشة البداية -->
         <div id="startScreen">
-            <h1>عالم الموتى السائرين</h1>
-            <button onclick="startGame()">ابدأ اللعبة</button>
+            <h1>عالم الموتى السائرين 🧟‍♂️</h1>
+            <p>ابق على قيد الحياة وابنِ مجتمعك!</p>
+            <button onclick="startGame()">🚀 ابدأ اللعبة</button>
+        </div>
+
+        <!-- واجهة اللعبة -->
+        <div id="ui" style="display: none;">
+            <!-- شريط الموارد العلوي -->
+            <div id="topBar">
+                <div class="resources">
+                    <div class="resource">💎 <span>45</span></div>
+                    <div class="resource">🪙 <span>297</span></div>
+                    <div class="resource">🥩 <span>3785</span></div>
+                    <div class="resource">🪵 <span>1680</span></div>
+                </div>
+                <div class="top-buttons">
+                    <button class="icon-btn" onclick="openGift()">🎁</button>
+                    <button class="icon-btn" onclick="openShop()">🛒</button>
+                </div>
+            </div>
+
+            <!-- شريط الأدوات السفلي -->
+            <div id="bottomBar">
+                <button class="action-btn" onclick="openCastle()">🏰 القلعة</button>
+                <button class="action-btn" onclick="openCharacters()">👥 الشخصيات</button>
+                <button class="action-btn" onclick="openBuildings()">🏠 المباني</button>
+                <button class="action-btn" onclick="openWeapons()">⚔️ الأسلحة</button>
+                <button class="action-btn" onclick="openSettings()">⚙️ الإعدادات</button>
+            </div>
         </div>
     </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="script.js"></script>
 </body>
